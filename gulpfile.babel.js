@@ -109,7 +109,12 @@ gulp.task('styles', () => {
 // Concatenate and minify JavaScript. Optionally transpiles ES2015 code to ES5.
 // to enables ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
 // `.babelrc` file.
-let bundler = watchify(browserify('./app/scripts/main.js', watchify.args));
+let bundler = watchify(browserify({
+  entries: ['./app/scripts/main.js'],
+  debug: true,
+  extensions: ['.jsx','.js'],
+}, watchify.args));
+
 bundler.transform(babelify);
 let bundle = () =>{
   let b = bundler.bundle()
