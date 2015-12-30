@@ -142,8 +142,9 @@ let bundle = () =>{
     .on('finish', reload)
 }
 
-bundler.on('update', bundle);
-gulp.task('scripts', bundle);
+gulp.task('scripts', (done) => {
+  bundle().on('finish', done);
+});
 
 // Scan your HTML for assets & optimize them
 gulp.task('html', () => {
@@ -170,13 +171,13 @@ gulp.task('html', () => {
 });
 
 // Clean output directory
-gulp.task('clean', cb => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
+gulp.task('clean', cb => del(['.tmp', 'dist/*', '!dist/.git', '!dist/server.js'], {dot: true}));
 
-// Watch files for changes & reload
-gulp.task('serve', ['scripts', 'styles'], () => {
+gulp.task('browser-sync', ['nodemon'], () => {
   browserSync({
     notify: false,
     // Customize the Browsersync console logging prefix
+    proxy: "http://localhost:8080",
     logPrefix: 'WSK',
     // Allow scroll syncing across breakpoints
     scrollElementMapping: ['main', '.mdl-layout'],
@@ -184,10 +185,30 @@ gulp.task('serve', ['scripts', 'styles'], () => {
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
     // https: true,
-    server: ['.tmp', 'app'],
+    serveStatic: ['.tmp', 'app'],
     port: 3000
   });
+})
 
+gulp.task('nodemon', (cb) => {
+
+	var started = false;
+
+	return $.nodemon({
+		script: './dist/server.js'
+	}).on('start', function () {
+		// to avoid nodemon being started multiple times
+		// thanks @matthisk
+		if (!started) {
+			cb();
+			started = true;
+		}
+	});
+});
+
+// Watch files for changes & reload
+gulp.task('serve', ['scripts', 'styles', 'browser-sync'], () => {
+  bundler.on('update', bundle);
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
   gulp.watch(['app/scripts/**/*.js'], ['lint']);
@@ -195,17 +216,17 @@ gulp.task('serve', ['scripts', 'styles'], () => {
 });
 
 // Build and serve the output from the dist build
-gulp.task('serve:dist', ['default'], () =>
+gulp.task('serve:dist', ['default', 'nodemon'], () =>
   browserSync({
     notify: false,
+    proxy: "http://localhost:8080",
     logPrefix: 'WSK',
     // Allow scroll syncing across breakpoints
     scrollElementMapping: ['main', '.mdl-layout'],
     // Run as an https by uncommenting 'https: true'
     // Note: this uses an unsigned certificate which on first access
-    //       will present a certificate warning in the browser.
+    //       w=ill present a certificate warning in the browser.
     // https: true,
-    server: 'dist',
     port: 3001
   })
 );
