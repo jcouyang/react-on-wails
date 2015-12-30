@@ -74,24 +74,9 @@ if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || is
       console.error('Error during service worker registration:', e);
     });
 }
-const React = require('react');
-const Header = React.createClass({
-  render() {
-    return (
-        <div>
-          <a href="#overview" className="mdl-layout__tab is-active">Overview</a>
-          <a href="#features" className="mdl-layout__tab">New</a>
-          <a href="#features" className="mdl-layout__tab">Threads</a>
-          <a href="#features" className="mdl-layout__tab">Ask</a>
-          <a href="#features" className="mdl-layout__tab">ShowHN</a>
-          <a href="#features" className="mdl-layout__tab">Comments</a>
-          <button className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" id="add">
-            <i className="material-icons" role="presentation">add</i>
-            <span className="visuallyhidden">Add</span>
-          </button>
-        </div>
-    );
-  },
-});
 
-require('react-dom').render(<Header />, document.querySelector('.mdl-layout__tab-bar'));
+import routes from './router';
+import { Router as router } from 'director';
+
+window.Router = router(routes);
+window.Router.configure({ html5history: true }).init();
