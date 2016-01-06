@@ -77,6 +77,6 @@ if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || is
 
 import routes from './router';
 import { Router as router } from 'director';
-
-window.Router = router(routes);
+import clientApdapter from './clientApdapter'
+window.Router = router(clientApdapter(routes));
 window.Router.configure({ html5history: true }).init();
