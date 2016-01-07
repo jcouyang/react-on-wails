@@ -3,10 +3,16 @@ import React from 'react';
 import Header from '../components/header';
 import Panels from '../components/pannels';
 function root(channel = 'home') {
-  return {
-    'header-tabs': <Header />,
-    'tab-panels': <Panels title={channel} />
-  }
+  return [
+    {
+      selector: 'header-tabs',
+      component: <Header />,
+    },
+    {
+      selector: 'tab-panels',
+      component: <Panels title={channel} />,
+    },
+  ]
 }
 
 export default root;

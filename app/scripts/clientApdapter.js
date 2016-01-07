@@ -3,8 +3,8 @@ import React from 'react-dom';
 function adapt (controller) {
   return function(){
     let views = controller.apply(null, arguments);
-    for (let v in views) {
-      React.render(views[v], document.getElementById(v));
+    for (let v of views) {
+      React.render(v.component, document.getElementById(v.selector));
     }
   }
 }
