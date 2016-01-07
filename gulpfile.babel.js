@@ -127,14 +127,12 @@ let bundle = () =>{
       .pipe($.sourcemaps.init())
       .pipe($.sourcemaps.write())
       .pipe(gulp.dest('.tmp/scripts'))
-      .pipe($.concat('main.min.js'))
       .pipe($.uglify({preserveComments: 'some'}))
       .pipe($.size({title: 'scripts'}))
       .pipe($.sourcemaps.write('.'))
   }else{
     b = b
       .pipe(gulp.dest('.tmp/scripts'))
-      .pipe($.concat('main.min.js'))
       .pipe($.size({title: 'scripts'}))
   }
   return b
@@ -149,7 +147,6 @@ gulp.task('scripts', (done) => {
 // Scan your HTML for assets & optimize them
 gulp.task('html', () => {
   return gulp.src('app/**/*.html')
-    .pipe($.useref({searchPath: '{.tmp,app}'}))
     // Remove any unused CSS
     .pipe($.if('*.css', $.uncss({
       html: [
