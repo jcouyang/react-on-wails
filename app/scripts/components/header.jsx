@@ -7,8 +7,8 @@ const Header = React.createClass({
   render() {
     return (
       <div>
-        <a href="#" className="mdl-layout__tab" onClick={_=>Router.setRoute('/')}>Home</a>
-        <a href="#" className="mdl-layout__tab" onClick={_=>Router.setRoute('/show')}>Threads</a>
+        <a href="#" className="mdl-layout__tab" onClick={_=>Router.setRoute('/topstories')}>Home</a>
+        <a href="#" className="mdl-layout__tab" onClick={_=>Router.setRoute('/newstories')}>New</a>
         <a href="#" className="mdl-layout__tab">Ask</a>
         <a href="#show" className="mdl-layout__tab">ShowHN</a>
         <a href="#comments" className="mdl-layout__tab">Comments</a>

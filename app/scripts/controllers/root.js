@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import Header from '../components/header';
 import Panels from '../components/pannels';
-function root(channel = 'home') {
+function root(channel = 'topstories') {
   return [
     {
       selector: 'header-tabs',
@@ -10,7 +10,7 @@ function root(channel = 'home') {
     },
     {
       selector: 'tab-panels',
-      component: <Panels title={channel} />,
+      component: <Panels channel={channel} />,
     },
   ]
 }
